@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Quiz</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple Quiz</h1>
+  <div id="question"></div>
+  <div id="options"></div>
+  <button onclick="checkAnswer()">Check Answer</button>
+  <p id="result"></p>
+
+  <script>
+    const quizData = [
+      {
+        question: "What is the capital of France?",
+        options: ["Berlin", "Paris", "Madrid", "Rome"],
+        correctAnswer: "Paris"
+      },
+      {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Earth", "Mars", "Jupiter", "Venus"],
+        correctAnswer: "Mars"
+      },
+      {
+        question: "What is the largest mammal in the world?",
+        options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+        correctAnswer: "Blue Whale"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let selectedOption = '';
+
+    function displayQuestion() {
+      const currentQuestion = quizData[currentQuestionIndex];
+      document.getElementById('question').innerHTML = currentQuestion.question;
+
+      const optionsHtml = currentQuestion.options.map(option =>
+        `<input type="radio" name="options" value="${option}" onclick="setSelectedOption('${option}')"> ${option}<br>`
+      ).join('');
+      document.getElementById('options').innerHTML = optionsHtml;
+    }
+
+    function setSelectedOption(option) {
+      selectedOption = option;
+    }
+
+    function checkAnswer() {
+      const currentQuestion = quizData[currentQuestionIndex];
+      const resultElement = document.getElementById('result');
+
+      if (selectedOption === currentQuestion.correctAnswer) {
+        resultElement.style.color = 'green';
+        resultElement.textContent = 'Correct!';
+      } else {
+        resultElement.style.color = 'red';
+        resultElement.textContent = `Incorrect. The correct answer is: ${currentQuestion.correctAnswer}`;
+      }
+
+      // Move to the next question or end the quiz
+      if (currentQuestionIndex < quizData.length - 1) {
+        currentQuestionIndex++;
+        selectedOption = '';
+        displayQuestion();
+      } else {
+        resultElement.style.color = '#333';
+        resultElement.textContent = 'Quiz completed. Well done!';
+        document.getElementById('options').innerHTML = '';
+      }
+    }
+
+    // Initial display
+    displayQuestion();
+  </script>
+</body>
+</html>
